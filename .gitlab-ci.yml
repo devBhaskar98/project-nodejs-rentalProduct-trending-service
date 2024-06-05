@@ -1,0 +1,13 @@
+stages:
+- unit-test
+
+test:
+  stage: unit-test
+  tags:
+    - windows
+  script:
+    - node -v
+    - echo {$CI_PIPELINE_SOURCE}
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$RUN_SECURITY_SCAN == "true"'
