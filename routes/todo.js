@@ -4,7 +4,46 @@ import { getTask, getAllTasks, saveTask } from '../db/mySqlDb.js';
 const router = Router();
 
 /**
- * get all tasks
+ * @swagger
+ * /task/{taskId}:
+ *   get:
+ *     summary: Get a task
+ *     description: Retrieve a specific task by ID.
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         description: ID of the task to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 taskId:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 completed:
+ *                   type: boolean
+ *                 important:
+ *                   type: boolean
+ *                 createdDate:
+ *                   type: string
+ *                   format: date-time
+ *                 updatedDate:
+ *                   type: string
+ *                   format: date-time
+ *       404:
+ *         description: Task not found
+ *       500:
+ *         description: Internal server error
  */
 router.get('/task/:taskId', (req, res) => {
     // Retrieve the taskId from the URL parameters
@@ -27,7 +66,14 @@ router.get('/task/:taskId', (req, res) => {
 
 
 /**
- * get all tasks
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Get a list of tasks
+ *     description: Retrieve a list of tasks from the mySql database.
+ *     responses:
+ *       200:
+ *         description: Successful response with a list of tasks.
  */
 router.get('', (req,res) => {
     getAllTasks((err, tasks) => {
@@ -62,14 +108,5 @@ router.post('', async (req,res) => {
         res.send("save successfully done");
     });
 });
-
-
-
-
-
-
-
-
-
 
 export default router;
