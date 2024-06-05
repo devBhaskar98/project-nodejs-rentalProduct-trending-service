@@ -1,10 +1,14 @@
 import express from 'express';
 import http from 'http';
-import router from './routes/main.js';
+import {db} from './db/mySqlDb.js'
+
+import mainRoutes from './routes/main.js';
+import todoRoutes from './routes/todo.js';
 
 const app = new express();
 
-app.use('/', router);
+app.use('/', mainRoutes);
+app.use('/todo', todoRoutes);
 
 const port = process.env.PORT || '3000';
 app.set('port', port);
