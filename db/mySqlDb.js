@@ -1,5 +1,5 @@
 import mysql from 'mysql';
-
+import {getLastTaskId} from './utils.js'
 
 // Db setup
 const db = mysql.createConnection({
@@ -15,7 +15,7 @@ db.connect((err) => {
         console.error('Error connecting to the database:', err.stack);
         return;
     }
-    console.log('Connected to the database as id ' + db.threadId);
+    // console.log('Connected to the database as id ' + db.threadId);
 });
 
 // Function to get all tasks
@@ -44,19 +44,29 @@ const getTask = (taskId, callback) => {
     });
 };
 
-// Function to save a new task
-const saveTask = (task, callback) => {
-    const { task_id, name, description, completed, important, created_dt, updated_dt } = task;
 
-    const query = 'INSERT INTO tasks (task_id, name, description, completed, important, created_dt, updated_dt) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    db.query(query, [task_id, name, description, completed, important, created_dt, updated_dt], (err, result) => {
-        if (err) {
-            console.error('Error saving task:', err.stack);
-            callback(err, null);
-            return;
-        }
-        callback(null, result);
-    });
+
+// Function to save a new task
+const saveTask = async (task, callback) => {
+    try {
+        const task_id = await getLastTaskId();
+        console.log('Id generated ', task_id);
+
+        const { name, description, completed, important, created_dt, updated_dt } = task;
+
+        const query = 'INSERT INTO tasks (task_id, name, description, completed, important, created_dt, updated_dt) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        db.query(query, [task_id, name, description, completed, important, created_dt, updated_dt], (err, result) => {
+            if (err) {
+                console.error('Error saving task:', err.stack);
+                callback(err, null);
+                return;
+            }
+            callback(null, result);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        callback(error, null);
+    }
 };
 
 

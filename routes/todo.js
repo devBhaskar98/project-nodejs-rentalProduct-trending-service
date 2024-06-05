@@ -17,8 +17,14 @@ router.get('/task/:taskId', (req, res) => {
     getTask(taskId, (err, task) => {
         if (err) {
             console.error('Error getting tasks:', err);
+            res.status(500).send({ error: 'An error occurred while retrieving the task.' });
             return;
         }
+
+        if(task.length <= 0) {
+            res.status(404).send({ error: 'Task id not found' }); 
+        }
+
         res.send(task);
     })
     
@@ -41,7 +47,7 @@ router.get('', (req,res) => {
 /**
  * save task
  */
-router.post('', (req,res) => {
+router.post('', async (req,res) => {
     // Example usage: Save a new task
     const newTask = {
         task_id: 3,
@@ -53,12 +59,12 @@ router.post('', (req,res) => {
         updated_dt: null
     };
 
-    saveTask(newTask, (err, result) => {
+    await saveTask(newTask, (err, result) => {
         if (err) {
             console.error('Error saving task:', err);
             return;
         }
-        console.log('Task saved successfully:', result);
+        res.send("save successfully done");
     });
 });
 

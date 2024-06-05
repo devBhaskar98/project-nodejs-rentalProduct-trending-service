@@ -1,6 +1,5 @@
 import express from 'express';
 import http from 'http';
-import {db} from './db/mySqlDb.js'
 
 import mainRoutes from './routes/main.js';
 import todoRoutes from './routes/todo.js';
