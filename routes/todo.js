@@ -3,11 +3,6 @@ import { getTask, getAllTasks, saveTask } from '../db/mySqlDb.js';
 
 const router = Router();
 
-router.get('/health', (req, res) => {
-    res.send('todo route service running');
-})
-
-
 /**
  * get all tasks
  */

@@ -6,6 +6,10 @@ import todoRoutes from './routes/todo.js';
 
 const app = new express();
 
+app.use('/health-check', (req, res) => {
+    res.status(200).send({status: "Fun todo service NodeJs is running...!!!!"})
+})
+
 app.use('/', mainRoutes);
 app.use('/todo', todoRoutes);
 
