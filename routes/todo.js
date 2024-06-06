@@ -1,7 +1,64 @@
 import {Router} from 'express';
 import { getTask, getAllTasks, saveTask } from '../db/mySqlDb.js';
+import mongoDb from '../db/mongoDb.js'
+import {paginatedResults} from '../utils.js'
+import Task from '../db/schema/task.js'
+
+// populate the mongoDb
+mongoDb.connectDB();
+mongoDb.populateMongoDb();
+
 
 const router = Router();
+
+
+router.get('/tasks', paginatedResults(Task), (req, res) => {
+    res.json(res.paginatedResults)
+})
+
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Get a list of tasks
+ *     description: Retrieve a list of tasks from the mySql database.
+ *     responses:
+ *       200:
+ *         description: Successful response with a list of tasks.
+ */
+router.get('', (req,res) => {
+    getAllTasks((err, tasks) => {
+        if (err) {
+            console.error('Error getting tasks:', err);
+            return;
+        }
+        res.send(tasks);
+    });
+});
+
+/**
+ * save task
+ */
+router.post('', async (req,res) => {
+    // Example usage: Save a new task
+    const newTask = {
+        task_id: 3,
+        name: 'New Task',
+        description: 'This is a new task',
+        completed: false,
+        important: false,
+        created_dt: new Date(),
+        updated_dt: null
+    };
+
+    await saveTask(newTask, (err, result) => {
+        if (err) {
+            console.error('Error saving task:', err);
+            return;
+        }
+        res.send("save successfully done");
+    });
+});
 
 /**
  * @swagger
@@ -62,51 +119,6 @@ router.get('/task/:taskId', (req, res) => {
         res.send(task);
     })
     
-});
-
-
-/**
- * @swagger
- * /:
- *   get:
- *     summary: Get a list of tasks
- *     description: Retrieve a list of tasks from the mySql database.
- *     responses:
- *       200:
- *         description: Successful response with a list of tasks.
- */
-router.get('', (req,res) => {
-    getAllTasks((err, tasks) => {
-        if (err) {
-            console.error('Error getting tasks:', err);
-            return;
-        }
-        res.send(tasks);
-    });
-});
-
-/**
- * save task
- */
-router.post('', async (req,res) => {
-    // Example usage: Save a new task
-    const newTask = {
-        task_id: 3,
-        name: 'New Task',
-        description: 'This is a new task',
-        completed: false,
-        important: false,
-        created_dt: new Date(),
-        updated_dt: null
-    };
-
-    await saveTask(newTask, (err, result) => {
-        if (err) {
-            console.error('Error saving task:', err);
-            return;
-        }
-        res.send("save successfully done");
-    });
 });
 
 export default router;
