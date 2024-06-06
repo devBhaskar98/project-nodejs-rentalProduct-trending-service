@@ -1,5 +1,5 @@
 import mysql from 'mysql';
-import {getLastTaskId} from './utils.js'
+// import {getLastTaskId} from './utils.js'
 
 // Db setup
 const db = mysql.createConnection({
@@ -10,16 +10,20 @@ const db = mysql.createConnection({
     database: "funtodos"
 });
 
-db.connect((err) => {
-    if (err) {
-        console.error('Error connecting to the database:', err.stack);
-        return;
-    }
-    // console.log('Connected to the database as id ' + db.threadId);
-});
+let mySqlDb = {};
+
+mySqlDb.connectDB = async () => {
+    db.connect((err) => {
+        if (err) {
+            console.error('Error connecting to the database:', err.stack);
+            return;
+        }
+        // console.log('Connected to the database as id ' + db.threadId);
+    });
+}
 
 // Function to get all tasks
-const getAllTasks = (callback) => {
+mySqlDb.getAllTasks = (callback) => {
     const query = 'SELECT * FROM tasks';
     db.query(query, (err, results) => {
         if (err) {
@@ -32,7 +36,7 @@ const getAllTasks = (callback) => {
 };
 
 // Function to get all tasks
-const getTask = (taskId, callback) => {
+mySqlDb.getTask = (taskId, callback) => {
     const query = `SELECT * FROM tasks where task_id = ${taskId}`;
     db.query(query, (err, results) => {
         if (err) {
@@ -44,12 +48,10 @@ const getTask = (taskId, callback) => {
     });
 };
 
-
-
 // Function to save a new task
-const saveTask = async (task, callback) => {
+mySqlDb.saveTask = async (task, callback) => {
     try {
-        const task_id = await getLastTaskId();
+        const task_id =  await getLastTaskId();
         console.log('Id generated ', task_id);
 
         const { name, description, completed, important, created_dt, updated_dt } = task;
@@ -69,11 +71,4 @@ const saveTask = async (task, callback) => {
     }
 };
 
-
-
-export {
-    db,
-    getTask,
-    getAllTasks,
-    saveTask
-}
+export default mySqlDb;

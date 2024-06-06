@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { getTask, getAllTasks, saveTask } from '../db/mySqlDb.js';
+import mySqlDb from '../db/mySqlDb.js';
 import mongoDb from '../db/mongoDb.js'
 import {paginatedResults} from '../utils.js'
 import Task from '../db/schema/task.js'
@@ -27,7 +27,7 @@ router.get('/tasks', paginatedResults(Task), (req, res) => {
  *         description: Successful response with a list of tasks.
  */
 router.get('', (req,res) => {
-    getAllTasks((err, tasks) => {
+    mySqlDb.getAllTasks((err, tasks) => {
         if (err) {
             console.error('Error getting tasks:', err);
             return;
@@ -51,7 +51,7 @@ router.post('', async (req,res) => {
         updated_dt: null
     };
 
-    await saveTask(newTask, (err, result) => {
+    await mySqlDb.saveTask(newTask, (err, result) => {
         if (err) {
             console.error('Error saving task:', err);
             return;
@@ -105,7 +105,7 @@ router.post('', async (req,res) => {
 router.get('/task/:taskId', (req, res) => {
     // Retrieve the taskId from the URL parameters
     const taskId = req.params.taskId;
-    getTask(taskId, (err, task) => {
+    mySqlDb.getTask(taskId, (err, task) => {
         if (err) {
             console.error('Error getting tasks:', err);
             res.status(500).send({ error: 'An error occurred while retrieving the task.' });

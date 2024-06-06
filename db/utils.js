@@ -1,10 +1,10 @@
-import {db} from './mySqlDb.js';
+import mySqlDb from './mySqlDb.js';
 
 const getLastTaskId = async () => {
     return new Promise((resolve, reject) => {
         const query = `SELECT MAX(task_id) AS max_task_id FROM tasks`;
 
-        db.query(query, (err, results) => {
+        mySqlDb.query(query, (err, results) => {
             if (err) {
                 console.error('Error fetching tasks:', err.stack);
                 reject(err);
