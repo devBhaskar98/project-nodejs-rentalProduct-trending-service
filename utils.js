@@ -10,7 +10,15 @@ utils.setupEnv = async () => {
       const __filename = fileURLToPath(import.meta.url);
       const __dirname = dirname(__filename);
 
-      dotenv.config({ path: new URL('dev.env', import.meta.url) });
+      if(process.env.NODE_ENV === 'production') {
+        console.log('Node app running in production')
+        dotenv.config({ path: new URL('prod.env', import.meta.url) });
+      } else {
+        console.log('Node app running in development mode')
+        dotenv.config({ path: new URL('dev.env', import.meta.url) });
+      }
+
+      
 
       // Resolve the promise after a short delay to ensure dotenv.config completes
       resolve(true);
