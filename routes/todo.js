@@ -1,18 +1,18 @@
 import {Router} from 'express';
 import mySqlDb from '../db/mySqlDb.js';
 import mongoDb from '../db/mongoDb.js'
-import {paginatedResults} from '../utils.js'
+import utils from '../utils.js'
 import Task from '../db/schema/task.js'
 
 // populate the mongoDb
 mongoDb.connectDB();
-mongoDb.populateMongoDb();
+// mongoDb.populateMongoDb();
 
 
 const router = Router();
 
 
-router.get('/tasks', paginatedResults(Task), (req, res) => {
+router.get('/tasks', utils.paginatedResults(Task), (req, res) => {
     res.json(res.paginatedResults)
 })
 

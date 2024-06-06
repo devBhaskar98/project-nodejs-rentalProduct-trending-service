@@ -1,6 +1,8 @@
 import mySqlDb from './mySqlDb.js';
 
-const getLastTaskId = async () => {
+let utilsDb = {};
+
+utilsDb.getLastTaskId = async () => {
     return new Promise((resolve, reject) => {
         const query = `SELECT MAX(task_id) AS max_task_id FROM tasks`;
 
@@ -16,7 +18,4 @@ const getLastTaskId = async () => {
     });
 };
 
-
-export {
-    getLastTaskId
-}
+export default utilsDb;

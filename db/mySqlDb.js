@@ -1,5 +1,5 @@
 import mysql from 'mysql';
-// import {getLastTaskId} from './utils.js'
+import utilsDb from './utilsDb.js';
 
 // Db setup
 const db = mysql.createConnection({
@@ -18,7 +18,7 @@ mySqlDb.connectDB = async () => {
             console.error('Error connecting to the database:', err.stack);
             return;
         }
-        // console.log('Connected to the database as id ' + db.threadId);
+        console.log('connecting to mysql db ' + db.threadId);
     });
 }
 
@@ -51,7 +51,7 @@ mySqlDb.getTask = (taskId, callback) => {
 // Function to save a new task
 mySqlDb.saveTask = async (task, callback) => {
     try {
-        const task_id =  await getLastTaskId();
+        const task_id =  await utilsDb.getLastTaskId();
         console.log('Id generated ', task_id);
 
         const { name, description, completed, important, created_dt, updated_dt } = task;

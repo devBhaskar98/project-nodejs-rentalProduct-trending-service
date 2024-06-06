@@ -1,9 +1,7 @@
 import express from 'express';
 import http from 'http';
-
 import mainRoutes from './routes/main.js';
 import todoRoutes from './routes/todo.js';
-
 import swaggerUI from 'swagger-ui-express';
 import {swaggerSpec} from './swagger.js'
 
@@ -19,7 +17,7 @@ app.use('/health-check', (req, res) => {
 app.use('/', mainRoutes);
 app.use('/todo', todoRoutes);
 
-const port = process.env.PORT || '3000';
+const port = process.env.SERVER_PORT || '3000';
 app.set('port', port);
 
 const server = http.createServer(app);

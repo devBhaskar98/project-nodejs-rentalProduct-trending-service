@@ -3,8 +3,8 @@ import Task from '../db/schema/task.js';
 
 export const connectDB = async () => {
     try {
-        console.log('connecting to db...');
-        const conn = await mongoose.connect('mongodb://127.0.0.1/funtodos', {
+        console.log('connecting to mongo db...');
+        const conn = await mongoose.connect(`${process.env.MONGO_CONN_URL}`, {
             // useNewUrlParser: true,
             // useUnifiedTopology: true,
             // useFindAndModify: false, // Uncomment if needed
