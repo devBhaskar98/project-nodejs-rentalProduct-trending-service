@@ -4,7 +4,7 @@ stages:
 test:
   stage: unit-test
   tags:
-    - windows
+    - gitlab-org
   script:
     - node -v
     - echo {$CI_PIPELINE_SOURCE}
