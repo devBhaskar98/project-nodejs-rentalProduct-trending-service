@@ -18,7 +18,7 @@ mySqlDb.connectDB = async () => {
             console.error('Error connecting to the database:', err.stack);
             return;
         }
-        console.log('connecting to mysql db ' + db.threadId);
+        console.log('establishing connection with mysql db...' + db.threadId);
     });
 }
 
@@ -75,5 +75,7 @@ mySqlDb.saveTask = async (task, callback) => {
 mySqlDb.getSqlDbConnection = () => {
     return db;
 }
+
+mySqlDb.connectDB();
 
 export default mySqlDb;

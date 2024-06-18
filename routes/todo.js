@@ -1,12 +1,12 @@
 import {Router} from 'express';
 import mySqlDb from '../db/mySqlDb.js';
-import mongoDb from '../db/mongoDb.js'
+// import mongoDb from '../db/mongoDb.js'
 import utils from '../utils.js'
 import Task from '../db/schema/task.js'
 import logger from '../logger/index.js';
 
 // populate the mongoDb
-mongoDb.connectDB();
+// mongoDb.connectDB();
 // mongoDb.populateMongoDb();
 
 const todoLogger = logger.todoLogger();
@@ -14,9 +14,10 @@ const todoLogger = logger.todoLogger();
 const router = Router();
 
 
-router.get('/tasks', utils.paginatedResults(Task), (req, res) => {
-    res.json(res.paginatedResults)
-})
+// pagination support is for mongodb and I am not moving ahead with mongodb as of now
+// router.get('/tasks', utils.paginatedResults(Task), (req, res) => {
+//     res.json(res.paginatedResults)
+// })
 
 /**
  * @swagger
