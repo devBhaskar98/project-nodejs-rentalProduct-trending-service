@@ -4,9 +4,11 @@ import mainRoutes from './routes/main.js';
 import todoRoutes from './routes/todo.js';
 import swaggerUI from 'swagger-ui-express';
 import {swaggerSpec} from './swagger.js';
+import logger from './logger/index.js';
+
+
+
 const app = new express();
-
-
 /*###########################################
 MIDDLEWARE
 ###########################################*/
@@ -22,7 +24,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.use('/health-check', (req, res) => {
+    logger.info("information log");
     res.status(200).send({status: "Fun todo service NodeJs is running...!!!!"})
+    logger.info("TEST");
 })
 app.use('/', mainRoutes);
 app.use('/todo', todoRoutes);
