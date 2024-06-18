@@ -3,11 +3,13 @@ import mySqlDb from '../db/mySqlDb.js';
 import mongoDb from '../db/mongoDb.js'
 import utils from '../utils.js'
 import Task from '../db/schema/task.js'
+import logger from '../logger/index.js';
 
 // populate the mongoDb
 mongoDb.connectDB();
 // mongoDb.populateMongoDb();
 
+const todoLogger = logger.todoLogger();
 
 const router = Router();
 
@@ -27,6 +29,7 @@ router.get('/tasks', utils.paginatedResults(Task), (req, res) => {
  *         description: Successful response with a list of tasks.
  */
 router.get('', (req,res) => {
+    todoLogger.info("get all the task")
     mySqlDb.getAllTasks((err, tasks) => {
         if (err) {
             console.error('Error getting tasks:', err);

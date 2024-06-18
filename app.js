@@ -44,7 +44,8 @@ app.use((req, res) => {
 
 // Global Error Handler
 app.use((err, req, res, next) => {
-    console.error('Global error handler:', err);
+    console.error('Global error handler:', err.message);
+    logger.info(err)
     res.status(500).send('500 - Internal Server Error');
 });
   

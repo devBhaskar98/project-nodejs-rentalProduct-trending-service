@@ -2,6 +2,7 @@
 // const productionLogger = require('./productionLogger')
 
 import devLogger from "./devLogger.js";
+import TodoLogger from "./loggers.js";
 
 let logger = null;
 
@@ -13,6 +14,10 @@ if (process.env.NODE_ENV === "development") {
 if (process.env.NODE_ENV === "production") {
     // logger = productionLogger()
     console.log('ENV is yet to be setup')
+}
+
+logger.todoLogger = () => {
+    return TodoLogger();
 }
 
 export default logger;
