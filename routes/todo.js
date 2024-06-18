@@ -40,13 +40,14 @@ router.get('', (req,res) => {
  * save task
  */
 router.post('', async (req,res) => {
+    const data = JSON.parse(JSON.stringify(req.body, null, 2));
+
     // Example usage: Save a new task
     const newTask = {
-        task_id: 3,
-        name: 'New Task',
-        description: 'This is a new task',
-        completed: false,
-        important: false,
+        name: data.name,
+        description: data.description || 'NA',
+        completed: data.completed || false,
+        important: data.important || false,
         created_dt: new Date(),
         updated_dt: null
     };
@@ -56,7 +57,27 @@ router.post('', async (req,res) => {
             console.error('Error saving task:', err);
             return;
         }
-        res.send("save successfully done");
+
+        if(result.taskId) {
+            mySqlDb.getTask(result.taskId, (err, task) => {
+                if (err) {
+                    console.error('Error getting tasks:', err);
+                    res.status(500).send({ error: 'An error occurred while retrieving the task.' });
+                    return;
+                }
+        
+                if(task.length <= 0) {
+                    res.status(404).send({ error: 'Task id not found' }); 
+                }
+                
+                let response = {
+                    msg: "Task saved successfully",
+                    output: task
+                }
+        
+                res.send(response);
+            })
+        }
     });
 });
 

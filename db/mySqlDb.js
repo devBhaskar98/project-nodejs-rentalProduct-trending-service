@@ -63,6 +63,7 @@ mySqlDb.saveTask = async (task, callback) => {
                 callback(err, null);
                 return;
             }
+            result.taskId  = task_id;
             callback(null, result);
         });
     } catch (error) {
@@ -70,5 +71,9 @@ mySqlDb.saveTask = async (task, callback) => {
         callback(error, null);
     }
 };
+
+mySqlDb.getSqlDbConnection = () => {
+    return db;
+}
 
 export default mySqlDb;

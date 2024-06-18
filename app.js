@@ -3,9 +3,15 @@ import http from 'http';
 import mainRoutes from './routes/main.js';
 import todoRoutes from './routes/todo.js';
 import swaggerUI from 'swagger-ui-express';
-import {swaggerSpec} from './swagger.js'
-
+import {swaggerSpec} from './swagger.js';
 const app = new express();
+
+// For parsing application/json
+app.use(express.json());
+ 
+// For parsing application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
 
 // Serve Swagger documentation
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
