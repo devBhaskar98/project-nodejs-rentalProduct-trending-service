@@ -6,6 +6,11 @@ import swaggerUI from 'swagger-ui-express';
 import {swaggerSpec} from './swagger.js';
 const app = new express();
 
+
+/*###########################################
+MIDDLEWARE
+###########################################*/
+
 // For parsing application/json
 app.use(express.json());
  
@@ -19,10 +24,32 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use('/health-check', (req, res) => {
     res.status(200).send({status: "Fun todo service NodeJs is running...!!!!"})
 })
-
 app.use('/', mainRoutes);
 app.use('/todo', todoRoutes);
 
+/*###########################################
+GLOBAL HANDLERS
+###########################################*/
+
+// Catch-all middleware for unknown routes
+app.use((req, res) => {
+    res.status(404).send({
+        msg: 'route undefined'
+    });
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+    console.error('Global error handler:', err);
+    res.status(500).send('500 - Internal Server Error');
+});
+  
+// Example route that throws an error
+
+
+/*###########################################
+APP START
+###########################################*/
 const port = process.env.SERVER_PORT || '3000';
 app.set('port', port);
 
