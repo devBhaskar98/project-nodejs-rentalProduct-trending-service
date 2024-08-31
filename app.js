@@ -1,11 +1,10 @@
 import express from 'express';
 import http from 'http';
+import utils from './utils.js';
 import mainRoutes from './routes/main.js';
-import todoRoutes from './routes/todo.js';
+import trendingRoutes from './routes/trending/index.js';
 import swaggerUI from 'swagger-ui-express';
 import {swaggerSpec} from './swagger.js';
-import logger from './logger/index.js';
-
 
 
 const app = new express();
@@ -29,7 +28,8 @@ app.use('/health-check', (req, res) => {
     logger.info("TEST");
 })
 app.use('/', mainRoutes);
-app.use('/todo', todoRoutes);
+
+app.use('/trending', trendingRoutes);
 
 /*###########################################
 GLOBAL HANDLERS
