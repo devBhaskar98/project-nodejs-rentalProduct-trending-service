@@ -1,30 +1,29 @@
-import dotenv from 'dotenv';
+import { URL } from 'url';
+import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { dirname, resolve } from 'path';
+import dotenv from 'dotenv';
 
-utils.setupEnv = async () => {
-  return new Promise((resolve, reject) => {
-    try {
-      // Convert import.meta.url to file path
-      const __filename = fileURLToPath(import.meta.url);
-      const __dirname = dirname(__filename);
+let utils = {};
 
-      // Load the correct .env file based on the NODE_ENV environment variable
-      if (process.env.NODE_ENV === 'production') {
-        console.log('Node app running in production');
-        dotenv.config({ path: resolve(__dirname, 'prod.env') }); // Resolve the correct path to prod.env
-      } else {
-        console.log('Node app running in development mode');
-        dotenv.config({ path: resolve(__dirname, 'dev.env') }); // Resolve the correct path to dev.env
-      }
+// utils.setupEnv = async () => {
+//   return new Promise((resolve, reject) => {
+//       const __filename = fileURLToPath(import.meta.url);
+//       const __dirname = dirname(__filename);
 
-      // Resolve the promise once dotenv is configured
-      resolve(true);
-    } catch (error) {
-      reject(error); // Reject the promise if an error occurs
-    }
-  });
-};
+//       if(process.env.NODE_ENV === 'production') {
+//         console.log('Node app running in production')
+//         dotenv.config({ path: new URL('prod.env', import.meta.url) });
+//       } else {
+//         console.log('Node app running in development mode')
+//         dotenv.config({ path: new URL('dev.env', import.meta.url) });
+//       }
+
+      
+
+//       // Resolve the promise after a short delay to ensure dotenv.config completes
+//       resolve(true);
+//   });
+// };
 
 
 utils.paginatedResults = (model) => {
@@ -60,6 +59,5 @@ utils.paginatedResults = (model) => {
   }
 }
 
-utils.setupEnv();
 
 export default utils;
